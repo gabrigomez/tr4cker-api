@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import dotenv
+import os
+
+dotenv.load_dotenv(dotenv.find_dotenv())
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,10 +79,15 @@ WSGI_APPLICATION = 'python_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': os.getenv("password"),
+        'HOST': 'containers-us-west-152.railway.app',
+        'PORT': '6189',
     }
 }
+
 
 
 # Password validation
