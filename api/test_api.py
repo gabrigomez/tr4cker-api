@@ -22,8 +22,8 @@ def test_can_post_user():
     }
 
     print(payload)
-    response = requests.post(ENDPOINT)
-    assert response.status_code == 204
+    response = requests.post(ENDPOINT + '/register', json=payload)
+    assert response.status_code == 201
 
     
 

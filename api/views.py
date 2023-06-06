@@ -1,8 +1,11 @@
 from django.http import HttpResponse
-from rest_framework import generics
+from django.contrib.auth.hashers import make_password
+
+from rest_framework import generics, status
+from rest_framework.response import Response
 
 from .models import User
-from .serializers import UserSerializer
+from .serializers import UserSerializer, RegisterUserSerializer
 
 
 def index(request):
@@ -11,3 +14,21 @@ def index(request):
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class RegisterUserView(generics.CreateAPIView):
+    serializer_class = RegisterUserSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            email = serializer.data.get('email')
+            password = make_password(serializer.data.get('password'))
+            username = serializer.data.get('username')
+
+            user = User(email=email, password=password, username=username)
+            user.save()
+            return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+
