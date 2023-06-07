@@ -1,5 +1,6 @@
-import requests, os, dotenv
+import requests, os, dotenv, pytest
 from faker import Faker
+from api.models import User
 
 # Create your tests here.
 ENDPOINT = 'http://127.0.0.1:8000/api'
@@ -42,7 +43,7 @@ def test_can_post_user():
 
 def test_can_get_all_users():
     headers = {
-    "Authorization": "Bearer " + token
+        "Authorization": "Bearer " + token
     }
 
     response = requests.get(ENDPOINT + '/users', headers=headers)
@@ -67,6 +68,19 @@ def test_can_get_user_by_id():
     headers = {
         "Authorization": "Bearer " + token
     }
+
     response = requests.get(ENDPOINT + '/user/2', headers=headers)
     assert response.status_code == 200
+
+@pytest.mark.django_db(True)
+def test_can_delete_user():
+    headers = {
+        "Authorization": "Bearer " + token
+    }
+    user = User.objects.last()
+    id = user.id
+    print(user)
+
+    response = requests.delete(ENDPOINT + f'/user/{id}', headers=headers)
+    assert response.status_code == 201
 
