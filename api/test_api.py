@@ -39,9 +39,3 @@ def test_can_update_user():
 
     response = requests.patch(ENDPOINT + '/user/2', json=payload)
     assert response.status_code == 200
-
-
-
-
-    
-

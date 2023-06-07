@@ -34,6 +34,7 @@ class RegisterUserView(generics.CreateAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class UserOptionsView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
     def patch(self, request, id):
         try:                
             user = User.objects.get(id=id)
