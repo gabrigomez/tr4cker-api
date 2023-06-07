@@ -32,5 +32,22 @@ class RegisterUserView(generics.CreateAPIView):
             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class UserOptionsView(generics.CreateAPIView):
+    def patch(self, request, id):
+        try:                
+            user = User.objects.get(id=id)
+            serializer = UserSerializer(user, data=request.data)
+
+            if not serializer.is_valid():
+                print(serializer.errors)
+                return Response({"Erro na requisição"}, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response({"Usuário não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
     
 

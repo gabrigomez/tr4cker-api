@@ -20,7 +20,7 @@ def test_can_post_user():
         'password': password
     }
 
-    # print(payload)
+    print(payload)
     response = requests.post(ENDPOINT + '/register', json=payload)
     assert response.status_code == 201
 
@@ -29,15 +29,15 @@ def test_can_get_all_users():
     assert response.status_code == 200
 
 def test_can_update_user():
-    username = fake.email().split('@')[0]
-    password = fake.password(length=6, special_chars=False)
+    username = fake.email().split('@')[0]    
 
     payload = {
         'username': username,        
-        'password': password
+        'password': 'password',
+        'email': 'xchapman@example.net'
     }
 
-    response = requests.put(ENDPOINT + '/user/2', json=payload)
+    response = requests.patch(ENDPOINT + '/user/2', json=payload)
     assert response.status_code == 200
 
 
