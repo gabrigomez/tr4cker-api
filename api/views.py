@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password
 
 from rest_framework import generics, status
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from .models import User
 from .serializers import UserSerializer, RegisterUserSerializer
@@ -12,6 +13,7 @@ def index(request):
     return HttpResponse("Hello, Server!")
 
 class UsersListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
