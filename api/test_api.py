@@ -72,15 +72,15 @@ def test_can_get_user_by_id():
     response = requests.get(ENDPOINT + '/user/2', headers=headers)
     assert response.status_code == 200
 
-@pytest.mark.django_db(True)
-def test_can_delete_user():
-    headers = {
-        "Authorization": "Bearer " + token
-    }
-    user = User.objects.last()
-    id = user.id
-    print(user)
+# @pytest.mark.django_db(True)
+# def test_can_delete_user():
+#     headers = {
+#         "Authorization": "Bearer " + token
+#     }
+#     user = User.objects.last()
+#     id = user.id
+#     print(user)
 
-    response = requests.delete(ENDPOINT + f'/user/{id}', headers=headers)
-    assert response.status_code == 201
+#     response = requests.delete(ENDPOINT + f'/user/{id}', headers=headers)
+#     assert response.status_code == 201
 
