@@ -42,23 +42,31 @@ def test_can_post_user():
 
 def test_can_get_all_users():
     headers = {
-        "Authorization": "Bearer " + token
+    "Authorization": "Bearer " + token
     }
-    
+
     response = requests.get(ENDPOINT + '/users', headers=headers)
     print(response.json())
     assert response.status_code == 200
 
 def test_can_update_user():
     username = fake.email().split('@')[0]
+    headers = {
+        "Authorization": "Bearer " + token
+    }
     payload = {
         'username': username,        
         'password': 'password',
         'email': 'xchapman@example.net'
     }
-    headers = {
-        "Authorization": "Bearer " + token
-    }
 
     response = requests.patch(ENDPOINT + '/user/2', json=payload, headers=headers)
     assert response.status_code == 200
+
+def test_can_get_user_by_id():
+    headers = {
+        "Authorization": "Bearer " + token
+    }
+    response = requests.get(ENDPOINT + '/user/2', headers=headers)
+    assert response.status_code == 200
+
