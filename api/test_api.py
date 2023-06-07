@@ -25,6 +25,11 @@ def test_can_post_user():
     response = requests.post(ENDPOINT + '/register', json=payload)
     assert response.status_code == 201
 
+def test_can_get_all_users():
+    response = requests.get(ENDPOINT + '/users')
+    assert response.status_code == 200
+    
+
 
 
     
