@@ -11,7 +11,7 @@ from .serializers import UserSerializer, RegisterUserSerializer
 def index(request):
     return HttpResponse("Hello, Server!")
 
-class UserListView(generics.ListAPIView):
+class UsersListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
