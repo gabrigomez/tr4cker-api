@@ -35,6 +35,7 @@ class RegisterUserView(generics.CreateAPIView):
 
 class UserOptionsView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
+    
     def patch(self, request, id):
         try:                
             user = User.objects.get(id=id)

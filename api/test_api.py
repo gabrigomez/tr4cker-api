@@ -20,6 +20,7 @@ def test_can_obtain_token():
     
     response = requests.post(ENDPOINT + '/token', json=payload)
     data = response.json()
+    global token
     token = data.get('access')
     
     assert response.status_code == 200    
@@ -40,17 +41,24 @@ def test_can_post_user():
     assert response.status_code == 201
 
 def test_can_get_all_users():
-    response = requests.get(ENDPOINT + '/users')
+    headers = {
+        "Authorization": "Bearer " + token
+    }
+    
+    response = requests.get(ENDPOINT + '/users', headers=headers)
+    print(response.json())
     assert response.status_code == 200
 
 def test_can_update_user():
-    username = fake.email().split('@')[0]    
-
+    username = fake.email().split('@')[0]
     payload = {
         'username': username,        
         'password': 'password',
         'email': 'xchapman@example.net'
     }
+    headers = {
+        "Authorization": "Bearer " + token
+    }
 
-    response = requests.patch(ENDPOINT + '/user/2', json=payload)
+    response = requests.patch(ENDPOINT + '/user/2', json=payload, headers=headers)
     assert response.status_code == 200
