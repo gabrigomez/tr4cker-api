@@ -22,20 +22,21 @@ class RegisterUserView(generics.CreateAPIView):
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
+
         if serializer.is_valid():
             email = serializer.data.get('email')
             password = make_password(serializer.data.get('password'))
             username = serializer.data.get('username')
-
+            
             user = User(email=email, password=password, username=username)
             user.save()
             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
 class UserOptionsView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
-    
+
     def patch(self, request, id):
         try:                
             user = User.objects.get(id=id)
@@ -44,6 +45,7 @@ class UserOptionsView(generics.CreateAPIView):
             if not serializer.is_valid():
                 print(serializer.errors)
                 return Response({"Erro na requisição"}, status=status.HTTP_400_BAD_REQUEST)
+            
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
