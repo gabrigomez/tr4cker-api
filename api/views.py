@@ -58,6 +58,15 @@ class UserOptionsView(generics.CreateAPIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response({"Usuário não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        
+    def delete(self, request, id):
+        try:
+            user = User.objects.get(id=id)
+            user.delete()
+            return Response({'Usuário excluído com sucesso'}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({'Usuário não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        
 
 
 
