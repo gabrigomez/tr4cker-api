@@ -36,6 +36,14 @@ class RegisterUserView(generics.CreateAPIView):
         
 class UserOptionsView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
+
+    def get(self, request, id):        
+        try:
+            user = User.objects.get(id=id)
+            return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({'Usuário não encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
     def patch(self, request, id):
         try:                
