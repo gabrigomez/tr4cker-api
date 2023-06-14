@@ -4,9 +4,10 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import AuthenticationFailed
 
 from .models import User
-from .serializers import UserSerializer, RegisterUserSerializer
+from .serializers import UserSerializer, RegisterUserSerializer, LoginUserSerializer
 
 
 def index(request):
@@ -33,6 +34,24 @@ class RegisterUserView(generics.CreateAPIView):
             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class LoginUserView(generics.CreateAPIView):
+#     def post(self, request):
+#         email = request.data.get('email')
+#         password = request.data.get('password')
+        
+#         user = User.objects.filter(email=email).first()
+
+#         if user is None:
+#             raise AuthenticationFailed('Usuário não encontrado')
+        
+#         if not user.check_password(password):
+#             raise AuthenticationFailed('Senha incorreta')
+            
+#         return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+
+        
+        
+
         
 class UserOptionsView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
