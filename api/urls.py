@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import RegisterUserView, UsersListView, UserOptionsView, LoginUserView
+from .views import RegisterUserView, UsersListView, UserOptionsView
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -9,8 +9,7 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('', views.index),
-    path('register', RegisterUserView.as_view()),
-    # path('login', LoginUserView.as_view()),
+    path('register', RegisterUserView.as_view()),    
     path('token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('user/<int:id>', UserOptionsView.as_view()),
     path('users', UsersListView.as_view()),
