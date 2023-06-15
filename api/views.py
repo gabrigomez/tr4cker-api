@@ -1,3 +1,6 @@
+from .models import User
+from .serializers import UserSerializer, RegisterUserSerializer, MyTokenObtainPairSerializer
+
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
 
@@ -5,8 +8,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from .models import User
-from .serializers import UserSerializer, RegisterUserSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 def index(request):
     return HttpResponse("Hello, Server!")
@@ -65,6 +67,10 @@ class UserOptionsView(generics.CreateAPIView):
             return Response({'Usuário excluído com sucesso'}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({'Usuário não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        
+   
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
         
 
 
