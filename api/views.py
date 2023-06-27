@@ -10,6 +10,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from .utils import get_token, search_artist, get_songs
+
 def index(request):
     return HttpResponse("Hello, Server!")
 
@@ -67,6 +69,23 @@ class UserOptionsView(generics.CreateAPIView):
             return Response({'Usuário excluído com sucesso'}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({'Usuário não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        
+class SpotifyArtistSearchView(generics.ListAPIView):
+    def post(self, request):
+        artist = request.data["artist"]
+        token = get_token()
+        result = search_artist(token, artist)
+        artist_id = result["id"]
+        songs = get_songs(token, artist_id)
+
+        list = []
+
+        for idx, song in enumerate(songs):
+            list.append(f"{song['name']}")
+        
+        return Response(list, status=status.HTTP_200_OK)
+        
+
         
    
 class MyTokenObtainPairView(TokenObtainPairView):
