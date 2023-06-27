@@ -72,18 +72,18 @@ class UserOptionsView(generics.CreateAPIView):
         
 class SpotifyArtistSearchView(generics.ListAPIView):
     def post(self, request):
-        artist = request.data["artist"]
+        artist = request.data["artist"]        
         token = get_token()
         result = search_artist(token, artist)
-        artist_id = result["id"]
+        artist_id = result["id"]        
         songs = get_songs(token, artist_id)
 
-        list = []
+        songlist = []
 
         for idx, song in enumerate(songs):
-            list.append(f"{song['name']}")
+            songlist.append(f"{song['name']}")
         
-        return Response(list, status=status.HTTP_200_OK)
+        return Response([result, songlist], status=status.HTTP_200_OK)
         
 
         
