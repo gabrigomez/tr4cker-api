@@ -55,7 +55,19 @@ class CreateArtistView(generics.CreateAPIView):
             artist.save()
             return Response(ArtistSerializer(artist).data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+
+class ArtistOptionsView(generics.CreateAPIView):
+    serializer_class = ArtistSerializer
+    
+    def get(self, request, id):
+        try:
+            artists = Artist.objects.filter(user_id=id).values()
+            if not artists:
+                return Response({'Artista não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(artists, status=status.HTTP_200_OK)
+        except:
+            return Response({'Ocorreu um erro na requisição'}, status=status.HTTP_404_NOT_FOUND)
         
         
 class UserOptionsView(generics.CreateAPIView):
