@@ -1,5 +1,5 @@
-from .models import User
-from .serializers import UserSerializer, RegisterUserSerializer, MyTokenObtainPairSerializer
+from .models import User, Artist
+from .serializers import UserSerializer, RegisterUserSerializer, MyTokenObtainPairSerializer, ArtistSerializer
 
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
@@ -36,6 +36,27 @@ class RegisterUserView(generics.CreateAPIView):
             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class CreateArtistView(generics.CreateAPIView):
+    serializer_class = ArtistSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            name = serializer.data.get('name')
+            image = serializer.data.get('image')
+            genre = serializer.data.get('genre')
+            user_id = serializer.data.get('user')
+                        
+            user = User.objects.get(id=user_id)
+            artist = Artist(name=name, image=image, genre=genre, user=user)
+            
+            artist.save()
+            return Response(ArtistSerializer(artist).data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
         
 class UserOptionsView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]

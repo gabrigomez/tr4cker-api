@@ -14,3 +14,12 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+class Artist(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField()
+    image = models.CharField()
+    genre = models.CharField()
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
