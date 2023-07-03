@@ -68,7 +68,15 @@ class ArtistOptionsView(generics.CreateAPIView):
             return Response(artists, status=status.HTTP_200_OK)
         except:
             return Response({'Ocorreu um erro na requisição'}, status=status.HTTP_404_NOT_FOUND)
-        
+    
+    def delete(self, request, id):
+        try:
+            artist = Artist.objects.get(id=id)
+            artist.delete()
+            return Response({'Artista excluído com sucesso'}, status=status.HTTP_200_OK)
+        except Artist.DoesNotExist:
+            return Response({'Artista não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+            
         
 class UserOptionsView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
