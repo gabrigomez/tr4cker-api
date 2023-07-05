@@ -62,10 +62,10 @@ class ArtistOptionsView(generics.CreateAPIView):
     
     def get(self, request, id):
         try:
-            artists = Artist.objects.filter(user_id=id).values()
-            if not artists:
+            artist = Artist.objects.get(id=id)            
+            if not artist:
                 return Response({'Artista não encontrado'}, status=status.HTTP_404_NOT_FOUND)
-            return Response(artists, status=status.HTTP_200_OK)
+            return Response(ArtistSerializer(artist).data, status=status.HTTP_200_OK)
         except:
             return Response({'Ocorreu um erro na requisição'}, status=status.HTTP_404_NOT_FOUND)
     
@@ -76,6 +76,19 @@ class ArtistOptionsView(generics.CreateAPIView):
             return Response({'Artista excluído com sucesso'}, status=status.HTTP_200_OK)
         except Artist.DoesNotExist:
             return Response({'Artista não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+class ArtistListView(generics.CreateAPIView):
+    serializer_class = ArtistSerializer
+    
+    def get(self, request, id):
+        try:
+            artists = Artist.objects.filter(user_id=id).values()
+            if not artists:
+                return Response({'Artista não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(artists, status=status.HTTP_200_OK)
+        except:
+            return Response({'Ocorreu um erro na requisição'}, status=status.HTTP_404_NOT_FOUND)   
+
             
         
 class UserOptionsView(generics.CreateAPIView):
