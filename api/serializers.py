@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 class ArtistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist
-        fields = ('name', 'image', 'genre', 'user')
+        fields = ('name', 'image', 'genre', 'user', 'id')
 
 class RegisterUserSerializer(serializers.ModelSerializer):
     class Meta:
