@@ -137,10 +137,7 @@ class SpotifyArtistSearchView(generics.ListAPIView):
         for idx, song in enumerate(songs):
             songlist.append(f"{song['name']}")
         
-        return Response([result, songlist], status=status.HTTP_200_OK)
-        
-
-        
+        return Response([result, songlist], status=status.HTTP_200_OK)        
    
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer

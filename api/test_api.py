@@ -15,11 +15,11 @@ def test_run_server():
 
 def test_can_obtain_token():    
     payload = {
-        'username': os.getenv("admin"),
+        'email': os.getenv("admin_email"),
         'password': os.getenv("admin_password")
     }
     
-    response = requests.post(ENDPOINT + '/token', json=payload)
+    response = requests.post(ENDPOINT + '/login', json=payload)
     data = response.json()
     global token
     token = data.get('access')
