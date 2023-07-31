@@ -96,7 +96,7 @@ DATABASES = {
         'PASSWORD': os.getenv("password"),
         'HOST': 'containers-us-west-152.railway.app',
         'PORT': '6189',
-    }
+    },
 }
 
 

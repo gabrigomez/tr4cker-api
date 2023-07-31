@@ -6,6 +6,7 @@ from api.models import User
 ENDPOINT = 'http://127.0.0.1:8000/api'
 fake = Faker()
 token = ''
+id_to_delete = 0
 
 dotenv.load_dotenv(dotenv.find_dotenv())
 
@@ -37,7 +38,6 @@ def test_can_post_user():
         'password': password
     }
 
-    print(payload)
     response = requests.post(ENDPOINT + '/register', json=payload)
     assert response.status_code == 201
 
@@ -47,7 +47,10 @@ def test_can_get_all_users():
     }
 
     response = requests.get(ENDPOINT + '/users', headers=headers)
-    print(response.json())
+    users = response.json()
+    
+    global id_to_delete
+    id_to_delete = list(users)[-1]['id']
     assert response.status_code == 200
 
 def test_can_update_user():
@@ -61,7 +64,7 @@ def test_can_update_user():
         'email': 'xchapman@example.net'
     }
 
-    response = requests.patch(ENDPOINT + '/user/2', json=payload, headers=headers)
+    response = requests.patch(ENDPOINT + '/user/3', json=payload, headers=headers)
     assert response.status_code == 200
 
 def test_can_get_user_by_id():
@@ -69,18 +72,15 @@ def test_can_get_user_by_id():
         "Authorization": "Bearer " + token
     }
 
-    response = requests.get(ENDPOINT + '/user/2', headers=headers)
+    response = requests.get(ENDPOINT + '/user/3', headers=headers)
     assert response.status_code == 200
 
-# @pytest.mark.django_db(True)
-# def test_can_delete_user():
-#     headers = {
-#         "Authorization": "Bearer " + token
-#     }
-#     user = User.objects.last()
-#     id = user.id
-#     print(user)
+def test_can_delete_user():
+    headers = {
+        "Authorization": "Bearer " + token
+    }
 
-#     response = requests.delete(ENDPOINT + f'/user/{id}', headers=headers)
-#     assert response.status_code == 201
+    response = requests.delete(ENDPOINT + f'/user/{id_to_delete}', headers=headers)
+    assert response.status_code == 200
+
 
