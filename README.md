@@ -17,8 +17,6 @@ O front-end da aplicação está disponível em https://tr4cker.netlify.app/
 - PyTest
 - Faker (para os testes com PyTest)
 
-O backend da aplicação está disponível em https://github.com/gabrigomez/python_api
-
 ## Endpoints :mag_right:
 
 #### - /register
