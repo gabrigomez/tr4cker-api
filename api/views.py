@@ -126,9 +126,10 @@ class UserOptionsView(generics.CreateAPIView):
         
 class SpotifyArtistSearchView(generics.ListAPIView):
     def post(self, request):
-        artist = request.data["artist"]        
+        artist = request.data["artist"]
+        limit = request.data["limit"]        
         token = get_token()
-        result = search_artist(token, artist)
+        result = search_artist(token, artist, limit)
 
         if result:
             response_data = []  # List to store individual artist
@@ -151,8 +152,8 @@ class SpotifyArtistSearchView(generics.ListAPIView):
                 
             return Response(response_data, status=status.HTTP_200_OK)
         else:
-            return Response({"message": "Nenhum artista encontrado"}, status=status.HTTP_404_NOT_FOUND)       
-   
+            return Response({"message": "Nenhum artista encontrado"}, status=status.HTTP_404_NOT_FOUND)
+          
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
         
