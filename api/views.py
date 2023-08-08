@@ -140,6 +140,9 @@ class SpotifyArtistSearchView(generics.ListAPIView):
                 artist_data = {
                     "name": artist_info["name"],
                     "id": artist_id,
+                    "followers": artist_info["followers"]["total"],
+                    "genres": artist_info["genres"],
+                    "external_url": artist_info["external_urls"]["spotify"],
                     "img": artist_info["images"][0]["url"] if artist_info["images"] else "", # Check if artist has an image
                     "songs": [song["name"] for song in songs]
                 }
