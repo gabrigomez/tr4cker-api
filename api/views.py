@@ -129,15 +129,26 @@ class SpotifyArtistSearchView(generics.ListAPIView):
         artist = request.data["artist"]        
         token = get_token()
         result = search_artist(token, artist)
-        artist_id = result["id"]        
-        songs = get_songs(token, artist_id)
 
-        songlist = []
+        if result:
+            response_data = []  # List to store individual artist
 
-        for idx, song in enumerate(songs):
-            songlist.append(f"{song['name']}")
-        
-        return Response([result, songlist], status=status.HTTP_200_OK)        
+            for artist_info in result:
+                artist_id = artist_info["id"]
+                songs = get_songs(token, artist_id)
+                
+                artist_data = {
+                    "name": artist_info["name"],
+                    "id": artist_id,
+                    "img": artist_info["images"][0]["url"] if artist_info["images"] else "", # Check if artist has an image
+                    "songs": [song["name"] for song in songs]
+                }
+                
+                response_data.append(artist_data)
+                
+            return Response(response_data, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "Nenhum artista encontrado"}, status=status.HTTP_404_NOT_FOUND)       
    
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer

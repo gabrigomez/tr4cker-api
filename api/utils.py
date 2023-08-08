@@ -29,7 +29,7 @@ def get_auth_header(token):
 def search_artist(token, artist_name):
     url = "https://api.spotify.com/v1/search"
     headers = get_auth_header(token)
-    query = f"?q={artist_name}&type=artist&limit=1"
+    query = f"?q={artist_name}&type=artist&limit=10"
 
     query_url = url + query
     result = get(query_url, headers=headers)
@@ -39,7 +39,7 @@ def search_artist(token, artist_name):
         print("Nenhum artista encontrado")
         return None
     
-    return json_result[0]
+    return json_result
 
 def get_songs(token, artist_id):
     url = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks?country=BR"
