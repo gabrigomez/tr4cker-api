@@ -144,7 +144,7 @@ class SpotifyArtistSearchView(generics.ListAPIView):
                     "followers": artist_info["followers"]["total"],
                     "genre": artist_info["genres"][0] if artist_info["genres"] else "",
                     "external_url": artist_info["external_urls"]["spotify"],
-                    "img": artist_info["images"][0]["url"] if artist_info["images"] else "", # Check if artist has an image
+                    "image": artist_info["images"][0]["url"] if artist_info["images"] else "", # Check if artist has an image
                     "songs": [song["name"] for song in songs]
                 }
                 
