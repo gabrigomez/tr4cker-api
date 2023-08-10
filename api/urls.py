@@ -5,7 +5,8 @@ from .views import (
     UsersListView, 
     UserOptionsView, 
     MyTokenObtainPairView, 
-    SpotifyArtistSearchView, 
+    SpotifyArtistSearchView,
+    SpotifyArtistSearchByIdView, 
     CreateArtistView, 
     ArtistOptionsView, 
     ArtistListView
@@ -25,5 +26,6 @@ urlpatterns = [
     path('artist', CreateArtistView.as_view()),
     path('artist-list/<int:id>', ArtistListView.as_view()),
     path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+    path('spotify/searchById', SpotifyArtistSearchByIdView.as_view()), 
     path('spotify', SpotifyArtistSearchView.as_view()),    
 ]

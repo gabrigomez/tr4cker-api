@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .utils import get_token, search_artist, get_songs
+from .utils import get_token, search_artist, get_songs, search_artist_by_id
 
 def index(request):
     return HttpResponse("Hello, Server!")
@@ -151,6 +151,29 @@ class SpotifyArtistSearchView(generics.ListAPIView):
                 response_data.append(artist_data)
                 
             return Response(response_data, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "Nenhum artista encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+class SpotifyArtistSearchByIdView(generics.ListAPIView):
+    def post(self, request):
+        id = request.data["id"]                
+        token = get_token()
+        result = search_artist_by_id(token, id)
+
+        if result:            
+            artist_id = result["id"]
+            songs = get_songs(token, artist_id)
+            
+            artist_data = {
+                "name": result["name"],
+                "id": artist_id,
+                "followers": result["followers"]["total"],
+                "genre": result["genres"][0] if result["genres"] else "",
+                "external_url": result["external_urls"]["spotify"],
+                "image": result["images"][0]["url"] if result["images"] else "", # Check if artist has an image
+                "songs": [song["name"] for song in songs]
+            }                
+            return Response(artist_data, status=status.HTTP_200_OK)
         else:
             return Response({"message": "Nenhum artista encontrado"}, status=status.HTTP_404_NOT_FOUND)
           

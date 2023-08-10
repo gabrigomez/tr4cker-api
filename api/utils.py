@@ -41,6 +41,19 @@ def search_artist(token, artist_name, limit):
     
     return json_result
 
+def search_artist_by_id(token, id):
+    url = f"https://api.spotify.com/v1/artists/{id}"
+    headers = get_auth_header(token)
+    
+    result = get(url, headers=headers)
+    json_result = json.loads(result.content)
+
+    if len(json_result) == 0:
+        print("Nenhum artista encontrado")
+        return None
+    
+    return json_result
+
 def get_songs(token, artist_id):
     url = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks?country=BR"
     headers = get_auth_header(token)
