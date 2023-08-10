@@ -167,7 +167,7 @@ class SpotifyArtistSearchByIdView(generics.ListAPIView):
             
             artist_data = {
                 "name": result["name"],
-                "id": artist_id,
+                "spotify_id": artist_id,
                 "followers": result["followers"]["total"],
                 "genre": result["genres"][0] if result["genres"] else "",
                 "external_url": result["external_urls"]["spotify"],
