@@ -48,9 +48,10 @@ class CreateArtistView(generics.CreateAPIView):
             image = serializer.data.get('image')
             genre = serializer.data.get('genre')
             user_id = serializer.data.get('user')
+            spotify_id = serializer.data.get('spotify_id')
                         
             user = User.objects.get(id=user_id)
-            artist = Artist(name=name, image=image, genre=genre, user=user)
+            artist = Artist(name=name, image=image, genre=genre, user=user, spotify_id=spotify_id)
             
             artist.save()
             return Response(ArtistSerializer(artist).data, status=status.HTTP_201_CREATED)

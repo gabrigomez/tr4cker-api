@@ -20,6 +20,7 @@ class Artist(models.Model):
     name = models.CharField()
     image = models.CharField()
     genre = models.CharField()
+    spofify_id = models.CharField(default='defaultValue')
     
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
