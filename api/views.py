@@ -7,7 +7,6 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .utils import get_token, search_artist, get_songs, search_artist_by_id
@@ -180,6 +179,7 @@ class SpotifyArtistSearchByIdView(generics.ListAPIView):
           
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
         
 
 

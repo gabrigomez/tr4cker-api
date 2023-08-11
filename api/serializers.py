@@ -19,6 +19,25 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         fields = ('email', 'password', 'username')
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    default_error_messages = {
+        'no_active_account': 'Usuário não cadastrado!',
+        'invalid_credentials': 'Senha incorreta!',
+    }
+
+    def validate(self, attrs):
+        email = attrs.get("email")
+        password = attrs.get("password")
+        
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            raise serializers.ValidationError(self.error_messages['no_active_account'], code='no_active_account')
+
+        if not user.check_password(password):
+            raise serializers.ValidationError(self.error_messages['invalid_credentials'], code='invalid_credentials')
+
+        return super().validate(attrs)
+    
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
